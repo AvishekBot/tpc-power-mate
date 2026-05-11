@@ -270,7 +270,7 @@ function SalesPOS() {
       <Dialog open={!!invoice} onOpenChange={(o) => !o && setInvoice(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-auto">
           <DialogHeader><DialogTitle>Invoice {invoice?.invoice_number}</DialogTitle></DialogHeader>
-          <div ref={printRef} id="invoice-printable">
+          <div ref={printRef} className="printable">
             {invoice && <InvoicePrint inv={invoice} />}
           </div>
           <DialogFooter>
