@@ -14,6 +14,8 @@ import { Route as ForbiddenRouteImport } from './routes/forbidden'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminSalesRouteImport } from './routes/admin.sales'
+import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -40,18 +42,32 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSalesRoute = AdminSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInventoryRoute = AdminInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/forbidden': typeof ForbiddenRoute
   '/login': typeof LoginRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forbidden': typeof ForbiddenRoute
   '/login': typeof LoginRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -60,14 +76,37 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/forbidden': typeof ForbiddenRoute
   '/login': typeof LoginRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/sales': typeof AdminSalesRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/forbidden' | '/login' | '/admin/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/forbidden'
+    | '/login'
+    | '/admin/inventory'
+    | '/admin/sales'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forbidden' | '/login' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/forbidden' | '/login' | '/admin/'
+  to:
+    | '/'
+    | '/forbidden'
+    | '/login'
+    | '/admin/inventory'
+    | '/admin/sales'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/forbidden'
+    | '/login'
+    | '/admin/inventory'
+    | '/admin/sales'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,14 +153,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/sales': {
+      id: '/admin/sales'
+      path: '/sales'
+      fullPath: '/admin/sales'
+      preLoaderRoute: typeof AdminSalesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/inventory': {
+      id: '/admin/inventory'
+      path: '/inventory'
+      fullPath: '/admin/inventory'
+      preLoaderRoute: typeof AdminInventoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminSalesRoute: typeof AdminSalesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminInventoryRoute: AdminInventoryRoute,
+  AdminSalesRoute: AdminSalesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
