@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { Loader2 } from "lucide-react";
@@ -29,7 +29,7 @@ function AdminLayout() {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AdminSidebar />
-        <div className="flex-1 flex flex-col min-w-0">
+        <SidebarInset className="min-w-0">
           <header className="h-12 flex items-center gap-2 border-b border-border px-3 sticky top-0 z-10 bg-background/80 backdrop-blur">
             <SidebarTrigger />
             <div className="text-sm text-muted-foreground">Admin Console</div>
@@ -37,7 +37,7 @@ function AdminLayout() {
           <main className="flex-1 p-4 md:p-6">
             <Outlet />
           </main>
-        </div>
+        </SidebarInset>
       </div>
     </SidebarProvider>
   );
