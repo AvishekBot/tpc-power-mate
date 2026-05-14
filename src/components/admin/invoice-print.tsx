@@ -1,4 +1,5 @@
 import { fmtNPR, fmtDateTime } from "@/lib/format";
+import { fmtBsDate } from "@/lib/nepali-date";
 
 export type InvoiceItem = {
   product_name_snapshot: string;
@@ -20,6 +21,7 @@ export type InvoiceData = {
   discount_amount: number;
   vat_amount: number;
   total_amount: number;
+  cashier_name?: string | null;
   items: InvoiceItem[];
 };
 
@@ -33,11 +35,13 @@ export function InvoicePrint({ inv }: { inv: InvoiceData }) {
       </div>
 
       <div className="flex justify-between mb-4 text-sm">
-        <div>
+        <div className="space-y-0.5">
           <div><span className="font-semibold">Invoice #:</span> {inv.invoice_number}</div>
-          <div><span className="font-semibold">Date:</span> {fmtDateTime(inv.sale_date)}</div>
+          <div><span className="font-semibold">Date (AD):</span> {fmtDateTime(inv.sale_date)}</div>
+          <div><span className="font-semibold">Date (BS):</span> {fmtBsDate(inv.sale_date)}</div>
+          {inv.cashier_name && <div><span className="font-semibold">Cashier:</span> {inv.cashier_name}</div>}
         </div>
-        <div className="text-right">
+        <div className="text-right space-y-0.5">
           {inv.customer_name && <div><span className="font-semibold">Customer:</span> {inv.customer_name}</div>}
           {inv.customer_phone && <div><span className="font-semibold">Phone:</span> {inv.customer_phone}</div>}
           <div><span className="font-semibold">Payment:</span> {inv.payment_method.toUpperCase()}</div>
@@ -87,8 +91,30 @@ export function InvoicePrint({ inv }: { inv: InvoiceData }) {
         </div>
       </div>
 
-      <div className="text-center text-xs text-gray-600 mt-8 border-t pt-3">
-        Thank you for your business! • Goods once sold cannot be returned without warranty terms.
+      <div className="mt-6 border border-gray-400 rounded p-3 text-xs">
+        <div className="font-semibold mb-1">Warranty & Terms</div>
+        <ul className="list-disc pl-4 space-y-0.5 text-gray-800">
+          <li>Warranty applies as per manufacturer terms from the date of this invoice.</li>
+          <li>Goods once sold are not returnable except under warranty conditions.</li>
+          <li>Physical damage, water damage, and unauthorized servicing void the warranty.</li>
+          <li>This invoice must be presented for any warranty claim or service request.</li>
+        </ul>
+      </div>
+
+      <div className="mt-8 grid grid-cols-2 gap-6 text-xs">
+        <div className="text-center">
+          <div className="border-t border-black pt-1 mt-12">Customer Signature</div>
+        </div>
+        <div className="text-center">
+          <div className="mx-auto w-32 h-20 border-2 border-dashed border-gray-500 rounded flex items-center justify-center text-[10px] text-gray-500">
+            Stamp & Signature
+          </div>
+          <div className="mt-1">For T.P.C Power Solutions</div>
+        </div>
+      </div>
+
+      <div className="text-center text-xs text-gray-600 mt-6 border-t pt-3">
+        Thank you for your business! • धन्यवाद ।
       </div>
     </div>
   );

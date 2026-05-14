@@ -124,7 +124,11 @@ function SalesPOS() {
       const { error: itemsErr } = await supabase.from("sale_items").insert(items);
       if (itemsErr) throw itemsErr;
 
+      const { data: prof } = await supabase
+        .from("profiles").select("full_name").eq("user_id", user.id).maybeSingle();
+
       setInvoice({
+        cashier_name: prof?.full_name || user.email || null,
         invoice_number: sale.invoice_number,
         sale_date: sale.sale_date,
         customer_name: sale.customer_name,
